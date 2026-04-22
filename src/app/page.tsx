@@ -2,6 +2,8 @@ import { HomeShell } from "@/components/home-shell";
 import { getServerSession } from "@/server/auth/session";
 import { getDashboardData, getRecentMatches } from "@/server/game/service";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   let session: Awaited<ReturnType<typeof getServerSession>> | null = null;
   let dashboard: Awaited<ReturnType<typeof getDashboardData>> | null = null;
@@ -44,3 +46,4 @@ export default async function Home() {
     />
   );
 }
+

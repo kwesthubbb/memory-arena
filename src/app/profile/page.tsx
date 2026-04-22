@@ -1,5 +1,7 @@
-import { getServerSession } from "@/server/auth/session";
 import { ProfilePage } from "@/components/profile-page";
+import { getServerSession } from "@/server/auth/session";
+
+export const dynamic = "force-dynamic";
 
 export default async function ProfileSettingsPage() {
   const session = await getServerSession();
@@ -19,3 +21,4 @@ export default async function ProfileSettingsPage() {
     />
   );
 }
+
