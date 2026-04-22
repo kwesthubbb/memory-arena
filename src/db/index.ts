@@ -10,11 +10,22 @@ const schema = {
   ...gameSchema,
 };
 
+const shouldRequireSsl = (databaseUrl: string) => {
+  try {
+    const url = new URL(databaseUrl);
+    const host = url.hostname;
+    return host !== "localhost" && host !== "127.0.0.1";
+  } catch {
+    return process.env.NODE_ENV === "production";
+  }
+};
+
 const createDb = (databaseUrl: string) => {
   const client = postgres(databaseUrl, {
     max: 10,
     idle_timeout: 20,
     prepare: false,
+    ...(shouldRequireSsl(databaseUrl) ? { ssl: "require" } : {}),
   });
 
   return drizzle(client, { schema });
@@ -37,4 +48,3 @@ export const db = new Proxy({} as Db, {
 }) as Db;
 
 export type Database = Db;
-
