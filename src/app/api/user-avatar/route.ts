@@ -15,33 +15,36 @@ const allowedTypes = new Map<string, string>([
   ["image/webp", "webp"],
 ]);
 
+const getAvatarsDir = () =>
+  process.env.AVATARS_DIR ?? path.resolve("public", "avatars");
+
 export async function POST(request: Request) {
   const session = await auth.api.getSession({
     headers: request.headers,
   });
 
   if (!session?.user) {
-    return new Response("Нужна авторизация", { status: 401 });
+    return new Response("РќСѓР¶РЅР° Р°РІС‚РѕСЂРёР·Р°С†РёСЏ", { status: 401 });
   }
 
   const formData = await request.formData();
   const avatar = formData.get("avatar");
 
   if (!avatar || !(avatar instanceof File)) {
-    return new Response("Не передан файл аватарки", { status: 400 });
+    return new Response("РќРµ РїРµСЂРµРґР°РЅ С„Р°Р№Р» Р°РІР°С‚Р°СЂРєРё", { status: 400 });
   }
 
   if (avatar.size > MAX_BYTES) {
-    return new Response("Слишком большой файл. Максимум 5MB.", { status: 400 });
+    return new Response("РЎР»РёС€РєРѕРј Р±РѕР»СЊС€РѕР№ С„Р°Р№Р». РњР°РєСЃРёРјСѓРј 5MB.", { status: 400 });
   }
 
   const ext = allowedTypes.get(avatar.type);
   if (!ext) {
-    return new Response("Разрешены только PNG/JPG/WEBP", { status: 400 });
+    return new Response("Р Р°Р·СЂРµС€РµРЅС‹ С‚РѕР»СЊРєРѕ PNG/JPG/WEBP", { status: 400 });
   }
 
   const userId = session.user.id;
-  const avatarsDir = path.join(process.cwd(), "public", "avatars");
+  const avatarsDir = getAvatarsDir();
   await fs.mkdir(avatarsDir, { recursive: true });
 
   const fileBytes = Buffer.from(await avatar.arrayBuffer());
