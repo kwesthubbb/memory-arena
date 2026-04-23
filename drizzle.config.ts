@@ -18,7 +18,12 @@ for (const fileName of envFiles) {
   }
 }
 
-if (!process.env.DATABASE_URL) {
+const isGenerate = process.argv.includes("generate");
+const databaseUrl =
+  process.env.DATABASE_URL ??
+  (isGenerate ? "postgresql://postgres:postgres@localhost:5432/postgres" : "");
+
+if (!databaseUrl && !isGenerate) {
   throw new Error("DATABASE_URL не задан. Добавь его в .env.local или .env");
 }
 
@@ -27,7 +32,7 @@ export default defineConfig({
   schema: "./src/db/*schema.ts",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: databaseUrl,
   },
   verbose: true,
   strict: true,

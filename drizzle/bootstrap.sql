@@ -63,6 +63,8 @@ CREATE TABLE IF NOT EXISTS public."user" (
   email text NOT NULL,
   email_verified boolean DEFAULT false NOT NULL,
   image text,
+  avatar_data bytea,
+  avatar_type text,
   created_at timestamp DEFAULT now() NOT NULL,
   updated_at timestamp DEFAULT now() NOT NULL,
   role text DEFAULT 'student'

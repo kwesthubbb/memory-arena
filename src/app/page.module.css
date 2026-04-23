@@ -26,13 +26,21 @@
   position: absolute;
   top: 32px;
   right: 32px;
+  z-index: 50;
 }
 
 .profileMenuButton {
-  border: none;
-  padding: 0;
-  background: transparent;
+  border: 1px solid var(--line);
+  padding: 6px;
+  background: rgba(8, 16, 31, 0.55);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
   cursor: pointer;
+}
+
+.profileMenuButton:focus-visible {
+  outline: 2px solid rgba(95, 208, 255, 0.72);
+  outline-offset: 2px;
 }
 
 .profileMenu {
@@ -436,6 +444,11 @@
 @media (max-width: 700px) {
   .page {
     padding: 18px;
+  }
+
+  .profileFloat {
+    top: 18px;
+    right: 18px;
   }
 
   .heroCard,
