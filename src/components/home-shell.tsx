@@ -411,45 +411,49 @@ export function HomeShell({
         <section className={styles.panel}>
           <h2 className={styles.panelTitle}>История завершённых матчей</h2>
           <div className={styles.matchList}>
-            {recentMatches.map((match) => (
-              <div className={styles.matchCard} key={`${match.code}-${match.finishedAt}`}>
-                <div className={styles.rowBetween}>
-                  <div className={styles.cardIdentity}>
-                    <div
-                      className={styles.avatarSmall}
-                      style={{
-                        background: match.winnerImage
-                          ? undefined
-                          : getAvatarGradient(match.winnerName),
-                      }}
-                    >
-                      {match.winnerIsBot ? (
-                        "🤖"
-                      ) : match.winnerImage ? (
-                        <Image
-                          className={styles.avatarImg}
-                          src={match.winnerImage}
-                          alt={match.winnerName}
-                          width={42}
-                          height={42}
-                          unoptimized
-                        />
-                      ) : (
-                        getInitials(match.winnerName)
-                      )}
+            {recentMatches.length === 0 ? (
+              <div className={styles.empty}>Завершённых матчей пока нет.</div>
+            ) : (
+              recentMatches.map((match) => (
+                <div className={styles.matchCard} key={`${match.code}-${match.finishedAt}`}>
+                  <div className={styles.rowBetween}>
+                    <div className={styles.cardIdentity}>
+                      <div
+                        className={styles.avatarSmall}
+                        style={{
+                          background: match.winnerImage
+                            ? undefined
+                            : getAvatarGradient(match.winnerName),
+                        }}
+                      >
+                        {match.winnerIsBot ? (
+                          "🤖"
+                        ) : match.winnerImage ? (
+                          <Image
+                            className={styles.avatarImg}
+                            src={match.winnerImage}
+                            alt={match.winnerName}
+                            width={42}
+                            height={42}
+                            unoptimized
+                          />
+                        ) : (
+                          getInitials(match.winnerName)
+                        )}
+                      </div>
+                      <div>
+                        <h3 className={styles.roomTitle}>{match.title}</h3>
+                        <p className={styles.meta}>
+                          Победитель: {match.winnerName} · Раундов: {match.roundNumber} · Завершено:{" "}
+                          {formatDateTime(match.finishedAt)}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className={styles.roomTitle}>{match.title}</h3>
-                      <p className={styles.meta}>
-                      Победитель: {match.winnerName} · Раундов: {match.roundNumber} · Завершено:{" "}
-                      {formatDateTime(match.finishedAt)}
-                      </p>
-                    </div>
+                    <span className={styles.tinyBadge}>{match.players.join(" · ")}</span>
                   </div>
-                  <span className={styles.tinyBadge}>{match.players.join(" · ")}</span>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </section>
       </div>
